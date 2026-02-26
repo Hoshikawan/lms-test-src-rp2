@@ -61,7 +61,7 @@ public class Case03 {
 		
 		// 初回ログイン済みユーザーID・パスワードを入力
 		loginId.sendKeys("StudentAA01");
-		pass.sendKeys("StudentAA011");
+		pass.sendKeys("StudentAA010101");
 		
 		// ログインボタンを押す
 		WebElement loginButton = webDriver.findElement(By.className("btn-primary"));
