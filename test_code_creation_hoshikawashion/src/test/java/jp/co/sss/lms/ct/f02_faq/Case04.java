@@ -3,7 +3,6 @@ package jp.co.sss.lms.ct.f02_faq;
 import static jp.co.sss.lms.ct.util.WebDriverUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.Duration;
 import java.util.Set;
 
 import org.junit.jupiter.api.AfterAll;
@@ -15,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * 結合テスト よくある質問機能
@@ -85,21 +82,16 @@ public class Case04 {
 	@Order(3)
 	@DisplayName("テスト03 上部メニューの「ヘルプ」リンクからヘルプ画面に遷移")
 	void test03() {
-		// 要素の描画遅延を考慮し、最大10秒間待機する
-		WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+		// クラス名"dropdown"の要素を探し、その要素をクリックする。
+		WebElement dropdown = webDriver.findElement(By.className("dropdown"));
+		dropdown.click();
 		
-		// クラス名"dropdown"の要素を探し、その要素がクリック可能になるまで待つ
-		WebElement function = wait.until(
-				ExpectedConditions.elementToBeClickable(By.className("dropdown"))
-		);
-		// クリックする
-		function.click();
-
-		// ヘルプリンク押下
-		WebElement helpLink = wait.until(
-				ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/lms/help']"))
-		);
+		// プルダウンに ヘルプ リンクテクストがあるか探す
+		WebElement helpLink = webDriver.findElement(By.partialLinkText("ヘルプ"));
 		helpLink.click();
+		
+		// ヘルプ画面に遷移したか確認
+		assertEquals("http://localhost:8080/lms/help", webDriver.getCurrentUrl());
 		
 		// エビデンス取得
 		getEvidence(new Object() {
@@ -116,10 +108,6 @@ public class Case04 {
 		
 		// 現在のタブハンドルを保持
 		String tab = webDriver.getWindowHandle();
-		
-		// 新しいタブを開く
-		WebElement newTab = webDriver.findElement(By.id("wrap"));
-		newTab.click();
 		
 		// 全タブを取得し、新規タブへ切り替え
 		Set<String> allTabs = webDriver.getWindowHandles();
